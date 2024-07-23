@@ -18,14 +18,18 @@ class Game:
     def play_game(self):
         print("Welcome to the Game!")
         print("Let's get started!")
-        self.render()
+        self.render()  # Display the initial state
+
         while not self.winner and not self.tie:
-            self.get_move()
-            self.render()
-            self.check_winner()
-            self.check_for_tie()
+            self.get_move()  # Get player input
+            self.check_winner()  # Check if there's a winner
+            self.render()  # Display the board and status
+            if not self.winner:
+                self.check_for_tie()  # Check if there's a tie
             if not self.winner and not self.tie:
-                self.switch_turn()
+                self.switch_turn()  # Switch turn if no winner or tie
+
+        self.render()  # Display final game state
 
     def print_board(self):
         b = self.board
@@ -46,25 +50,20 @@ class Game:
         elif self.winner:
             print(f"{self.winner} wins the game!")
         else:
-            print(f"It's player {self.turn}'s turn!")
+            print(
+                f"It's player {self.turn}'s turn!"
+            )  # Ensure this prints the correct turn
 
     def render(self):
         self.print_board()
         self.print_message()
 
     def get_move(self):
-        # Start an infinite loop
         while True:
-            # Ask the user to enter their move
             move = input("Enter a valid move (example: A1): ").lower()
-
-            # Check if the move is a valid key on the board
             if move in self.board:
-                # Check if the chosen spot is empty
                 if self.board[move] is None:
-                    # Update the board with the player's move
                     self.board[move] = self.turn
-                    # Exit the loop
                     break
                 else:
                     print("That spot is already taken. Try again.")
@@ -72,14 +71,12 @@ class Game:
                 print("Invalid move. Please enter a valid move.")
 
     def switch_turn(self):
-        # Use a dictionary to map the current turn to the next turn
         turn_lookup = {"X": "O", "O": "X"}
         self.turn = turn_lookup[self.turn]
 
     def check_winner(self):
         b = self.board
-
-        # check rows
+        # Check rows
         if b["a1"] and b["a1"] == b["b1"] == b["c1"]:
             self.winner = b["a1"]
         elif b["a2"] and b["a2"] == b["b2"] == b["c2"]:
@@ -87,7 +84,7 @@ class Game:
         elif b["a3"] and b["a3"] == b["b3"] == b["c3"]:
             self.winner = b["a3"]
 
-        # check columns
+        # Check columns
         elif b["a1"] and b["a1"] == b["a2"] == b["a3"]:
             self.winner = b["a1"]
         elif b["b1"] and b["b1"] == b["b2"] == b["b3"]:
@@ -95,7 +92,7 @@ class Game:
         elif b["c1"] and b["c1"] == b["c2"] == b["c3"]:
             self.winner = b["c1"]
 
-        # check diagonals
+        # Check diagonals
         elif b["a1"] and b["a1"] == b["b2"] == b["c3"]:
             self.winner = b["a1"]
         elif b["c1"] and b["c1"] == b["b2"] == b["a3"]:
