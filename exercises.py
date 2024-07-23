@@ -23,7 +23,9 @@ class Game:
             self.get_move()
             self.render()
             self.check_winner()
-            self.switch_turn()
+            self.check_for_tie()
+            if not self.winner and not self.tie:
+                self.switch_turn()
 
     def print_board(self):
         b = self.board
@@ -77,10 +79,34 @@ class Game:
             self.turn = "X"
 
     def check_winner(self):
-        # This method will check for a winner or a tie
-        pass
+        b = self.board
+
+        # check rows
+        if b["a1"] and b["a1"] == b["b1"] == b["c1"]:
+            self.winner = b["a1"]
+        elif b["a2"] and b["a2"] == b["b2"] == b["c2"]:
+            self.winner = b["a2"]
+        elif b["a3"] and b["a3"] == b["b3"] == b["c3"]:
+            self.winner = b["a3"]
+
+        # check columns
+        elif b["a1"] and b["a1"] == b["a2"] == b["a3"]:
+            self.winner = b["a1"]
+        elif b["b1"] and b["b1"] == b["b2"] == b["b3"]:
+            self.winner = b["b1"]
+        elif b["c1"] and b["c1"] == b["c2"] == b["c3"]:
+            self.winner = b["c1"]
+
+        # check diagonals
+        elif b["a1"] and b["a1"] == b["b2"] == b["c3"]:
+            self.winner = b["a1"]
+        elif b["c1"] and b["c1"] == b["b2"] == b["a3"]:
+            self.winner = b["c1"]
+
+    def check_for_tie(self):
+        if all(value is not None for value in self.board.values()) and not self.winner:
+            self.tie = True
 
 
-# Instantiate the Game class and invoke the play_game method
 game_instance = Game()
 game_instance.play_game()
