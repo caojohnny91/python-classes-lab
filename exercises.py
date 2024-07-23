@@ -72,11 +72,9 @@ class Game:
                 print("Invalid move. Please enter a valid move.")
 
     def switch_turn(self):
-        # Switch turn between 'X' and 'O'
-        if self.turn == "X":
-            self.turn = "O"
-        else:
-            self.turn = "X"
+        # Use a dictionary to map the current turn to the next turn
+        turn_lookup = {"X": "O", "O": "X"}
+        self.turn = turn_lookup[self.turn]
 
     def check_winner(self):
         b = self.board
